@@ -108,4 +108,22 @@ class IntTests: XCTestCase {
         
         XCTAssertEqual(value.range, expected)
     }
+    
+    func testGCD() {
+        XCTAssertEqual(UInt.gcd(firstNum: 1, secondNum: 1), 1)
+        XCTAssertEqual(UInt.gcd(firstNum: 10, secondNum: 5), 5)
+        XCTAssertEqual(UInt.gcd(firstNum: 6, secondNum: 4), 2)
+        XCTAssertEqual(UInt.gcd(firstNum: 30, secondNum: 9), 3)
+        XCTAssertEqual(UInt.gcd(firstNum: 65, secondNum: 52), 13)
+        XCTAssertEqual(UInt.gcd(firstNum: 125, secondNum: 50), 25)
+    }
+    
+    func testLCM() {
+        XCTAssertEqual(UInt.lcm(firstNum: 1, secondNum: 1), 1)
+        XCTAssertEqual(UInt.lcm(firstNum: 2, secondNum: 5), 10)
+        XCTAssertEqual(UInt.lcm(firstNum: 5, secondNum: 10), 10)
+        XCTAssertEqual(UInt.lcm(firstNum: 3, secondNum: 10), 30)
+        XCTAssertEqual(UInt.lcm(firstNum: 125, secondNum: 50), 250)
+        XCTAssertEqual(UInt.lcm(firstNum: 65, secondNum: 52), 260)
+    }
 }

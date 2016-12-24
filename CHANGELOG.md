@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 
 Add subsequent changes that you make in this section. 
 
+2. **UInt**
+ - `static gcd(firstNum:UInt, secondNum:UInt) -> UInt` in [[PR]](https://github.com/goktugyil/EZSwiftExtensions/pull/347) by *Khalian*
+ - `static lcm(firstNum:UInt, secondNum:UInt) -> UInt` in [[PR]](https://github.com/goktugyil/EZSwiftExtensions/pull/347)by *Khalian*
+
 ## [Version 1.8] 
 
 ### Fixed bugs
