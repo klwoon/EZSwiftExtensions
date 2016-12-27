@@ -113,11 +113,11 @@ extension Date {
     }
 
     // EZSE: Check date if it is today
-    public var isToday: Bool {
-        let format = DateFormatter()
-        format.dateFormat = "yyyy-MM-dd"
-        return format.string(from: self) == format.string(from: Date())
-    }
+//    public var isToday: Bool {
+//        let format = DateFormatter()
+//        format.dateFormat = "yyyy-MM-dd"
+//        return format.string(from: self) == format.string(from: Date())
+//    }
 
     /// EZSE: Check date if it is yesterday
     public var isYesterday: Bool {
