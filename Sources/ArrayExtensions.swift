@@ -234,10 +234,10 @@ extension Array where Element: Equatable {
     }
 
     /// EZSE: Removes all occurrences of the given object
-    @available(*, deprecated: 1.8, renamed: "removeAll(_:)")
-    public mutating func removeObjects(_ objects: Element...) {
-        objects.forEach { self.removeAll($0) }
-    }
+//    @available(*, deprecated: 1.8, renamed: "removeAll(_:)")
+//    public mutating func removeObjects(_ objects: Element...) {
+//        objects.forEach { self.removeAll($0) }
+//    }
 
 }
 
