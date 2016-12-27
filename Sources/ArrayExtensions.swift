@@ -133,13 +133,13 @@ extension Array where Element: Equatable {
     }
 
     // EZSE: Removes all occurrences of the given object
-    public mutating func removeAll(_ elements: Element...) {
-        for element in elements {
-            for index in self.indexes(of: element).reversed() {
-                self.remove(at: index)
-            }
-        }
-    }
+//    public mutating func removeAll(_ elements: Element...) {
+//        for element in elements {
+//            for index in self.indexes(of: element).reversed() {
+//                self.remove(at: index)
+//            }
+//        }
+//    }
 
     /// EZSE: Difference of self and the input arrays.
     public func difference(_ values: [Element]...) -> [Element] {
