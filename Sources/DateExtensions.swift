@@ -89,27 +89,37 @@ extension Date {
         let calendar = Calendar.current
         let components = (calendar as NSCalendar).components([.year, .month, .day, .hour, .minute, .second], from: self, to: date, options: [])
         var str: String
-
+        
         if components.year! >= 1 {
             components.year == 1 ? (str = "year") : (str = "years")
-            return "\(components.year) \(str) ago"
+            return "\(components.year!) \(str) ago"
         } else if components.month! >= 1 {
             components.month == 1 ? (str = "month") : (str = "months")
-            return "\(components.month) \(str) ago"
+            return "\(components.month!) \(str) ago"
         } else if components.day! >= 1 {
             components.day == 1 ? (str = "day") : (str = "days")
-            return "\(components.day) \(str) ago"
+            return "\(components.day!) \(str) ago"
         } else if components.hour! >= 1 {
             components.hour == 1 ? (str = "hour") : (str = "hours")
-            return "\(components.hour) \(str) ago"
+            return "\(components.hour!) \(str) ago"
         } else if components.minute! >= 1 {
             components.minute == 1 ? (str = "minute") : (str = "minutes")
-            return "\(components.minute) \(str) ago"
+            return "\(components.minute!) \(str) ago"
         } else if components.second == 0 {
             return "Just now"
         } else {
-            return "\(components.second) seconds ago"
+            return "\(components.second!) seconds ago"
         }
+    }
+    
+    /// EZSE: Check if date is in future.
+    public var isFuture: Bool {
+        return self > Date()
+    }
+    
+    /// EZSE: Check if date is in past.
+    public var isPast: Bool {
+        return self < Date()
     }
 
     // EZSE: Check date if it is today
@@ -141,21 +151,27 @@ extension Date {
         return self.month == today.month && self.year == today.year
     }
 
+    /// EZSE: Check date if it is within this week.
     public var isThisWeek: Bool {
         return self.minutesInBetweenDate(Date()) <= Double(Date.minutesInAWeek)
     }
 
-    // EZSE : Get the year from the date
+    /// EZSE: Get the era from the date
+    public var era: Int {
+        return Calendar.current.component(Calendar.Component.era, from: self)
+    }
+    
+    /// EZSE : Get the year from the date
     public var year: Int {
-        return NSCalendar.current.component(Calendar.Component.year, from: self)
+        return Calendar.current.component(Calendar.Component.year, from: self)
     }
 
-    // EZSE : Get the month from the date
+    /// EZSE : Get the month from the date
     public var month: Int {
-        return NSCalendar.current.component(Calendar.Component.month, from: self)
+        return Calendar.current.component(Calendar.Component.month, from: self)
     }
 
-    // EZSE : Get the weekday from the date
+    /// EZSE : Get the weekday from the date
     public var weekday: String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "EEEE"
@@ -171,21 +187,34 @@ extension Date {
 
     // EZSE : Get the day from the date
     public var day: Int {
-        return NSCalendar.current.component(Calendar.Component.day, from: self)
+        return Calendar.current.component(.day, from: self)
     }
 
     /// EZSE: Get the hours from date
     public var hour: Int {
-        return NSCalendar.current.component(Calendar.Component.hour, from: self)
+        return Calendar.current.component(.hour, from: self)
     }
 
     /// EZSE: Get the minute from date
     public var minute: Int {
-        return NSCalendar.current.component(Calendar.Component.minute, from: self)
+        return Calendar.current.component(.minute, from: self)
     }
 
     /// EZSE: Get the second from the date
     public var second: Int {
-        return NSCalendar.current.component(Calendar.Component.second, from: self)
+        return Calendar.current.component(.second, from: self)
+    }
+    
+    /// EZSE : Gets the nano second from the date
+    public var nanosecond: Int {
+        return Calendar.current.component(.nanosecond, from: self)
+    }
+    
+    /// EZSE : Gets the international standard(ISO8601) representation of date
+    @available(iOS 10.0, *)
+    @available(tvOS 10.0, *)
+    public var iso8601: String {
+        let formatter = ISO8601DateFormatter()
+        return formatter.string(from: self)
     }
 }

@@ -108,4 +108,38 @@ class IntTests: XCTestCase {
         
         XCTAssertEqual(value.range, expected)
     }
+    
+    func testGCD() {
+        XCTAssertEqual(UInt.gcd(1, 1), 1)
+        XCTAssertEqual(UInt.gcd(10, 5), 5)
+        XCTAssertEqual(UInt.gcd(6, 4), 2)
+        XCTAssertEqual(UInt.gcd(30, 9), 3)
+        XCTAssertEqual(UInt.gcd(65, 52), 13)
+        XCTAssertEqual(UInt.gcd(125, 50), 25)
+    }
+    
+    func testLCM() {
+        XCTAssertEqual(UInt.lcm(1, 1), 1)
+        XCTAssertEqual(UInt.lcm(2, 5), 10)
+        XCTAssertEqual(UInt.lcm(5, 10), 10)
+        XCTAssertEqual(UInt.lcm(3, 10), 30)
+        XCTAssertEqual(UInt.lcm(125, 50), 250)
+        XCTAssertEqual(UInt.lcm(65, 52), 260)
+    }
+    
+    func testDigitArray() {
+        XCTAssertEqual(25.digitArray, [2, 5])
+        XCTAssertEqual(500.digitArray, [5, 0, 0])
+        XCTAssertEqual(034.digitArray, [3, 4])
+        XCTAssertEqual(0.digitArray, [0])
+        XCTAssertEqual((-57).digitArray, [5, 7])
+        XCTAssertEqual((-039).digitArray, [3, 9])
+    }
+
+    func testRandomWithinRange() {
+        let closedRange: Range<Int> = 0..<10
+        let randomClosedInt = Int.random(within: closedRange)
+        XCTAssertGreaterThanOrEqual(randomClosedInt, 0)
+        XCTAssertLessThanOrEqual(randomClosedInt, 10)
+    }
 }

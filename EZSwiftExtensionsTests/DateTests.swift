@@ -13,7 +13,7 @@ class DateTests: XCTestCase {
 
     var string: String!
     var wrongDateString: String!
-    let format = "dd-mm-yyyy hh:mm:ss"
+    let format = "dd-MM-yyyy hh:mm:ss"
 
     override func setUp() {
         super.setUp()
@@ -132,6 +132,48 @@ class DateTests: XCTestCase {
         XCTAssertTrue(hours.timePassed().contains("hours"))
         XCTAssertTrue(minutes.timePassed().contains("minutes"))
         XCTAssertTrue(now.timePassed().contains("now") || now.timePassed().contains("seconds"))
+        
+        let today = Date()
+        let yesterday = Calendar.current.date(byAdding: .day, value: -1,to: today)
+        XCTAssertEqual(yesterday?.timePassed(), "1 day ago")
+        
+        let fiveSecondsAgo = Calendar.current.date(byAdding: .second, value: -5,to: today)
+        XCTAssertEqual(fiveSecondsAgo?.timePassed(), "5 seconds ago")
+        
+        let sixHoursAgo = Calendar.current.date(byAdding: .hour, value: -6,to: today)
+        XCTAssertEqual(sixHoursAgo?.timePassed(), "6 hours ago")
+        
+        let twoMonthsAgo = Calendar.current.date(byAdding: .month, value: -2,to: today)
+        XCTAssertEqual(twoMonthsAgo?.timePassed(), "2 months ago")
+        
+        let fifteenYearsAgo = Calendar.current.date(byAdding: .year, value: -15,to: today)
+        XCTAssertEqual(fifteenYearsAgo?.timePassed(), "15 years ago")
+    }
+    
+    func testIsPast() {
+        let beginningOfUnixTime = Date(timeIntervalSince1970: 0)
+        XCTAssertTrue(beginningOfUnixTime.isPast)
+        
+        let today = Date()
+        
+        let yesterday = Calendar.current.date(byAdding: .day, value: -1,to: today)
+        XCTAssertTrue((yesterday?.isPast)!)
+        
+        let tomorrow = Calendar.current.date(byAdding: .day, value: 1,to: today)
+        XCTAssertFalse((tomorrow?.isPast)!)
+    }
+    
+    func testIsFuture() {
+        let distantFuture = Date(httpDateString: "Sun Nov 6 08:49:37 5000")
+        XCTAssertTrue((distantFuture?.isFuture)!)
+        
+        let today = Date()
+        
+        let yesterday = Calendar.current.date(byAdding: .day, value: -1,to: today)
+        XCTAssertFalse((yesterday?.isFuture)!)
+        
+        let tomorrow = Calendar.current.date(byAdding: .day, value: 1,to: today)
+        XCTAssertTrue((tomorrow?.isFuture)!)
     }
     
     func testIsToday() {
@@ -186,6 +228,11 @@ class DateTests: XCTestCase {
         XCTAssertFalse(Date.distantPast.isThisMonth)
     }
     
+    func testEra() {
+        let customDate = Date(fromString: "12-01-2015 05:45:12", format: self.format)
+        XCTAssertEqual(customDate?.era, Calendar.current.component(Calendar.Component.era, from:customDate!))
+    }
+    
     func testYear() {
         let customDate = Date(fromString: "12-01-2015 05:45:12", format: self.format)
         XCTAssertEqual(customDate?.year, 2015)
@@ -199,6 +246,12 @@ class DateTests: XCTestCase {
     func testMonthAsString() {
         let customDate = Date(fromString: "09-01-2015 05:45:12", format: self.format)
         XCTAssertEqual(customDate?.monthAsString, "January")
+        
+        let customDate2 = Date(fromString: "10-03-2009 05:45:12", format: self.format)
+        XCTAssertEqual(customDate2?.monthAsString, "March")
+        
+        let customDate3 = Date(fromString: "11-11-2012 05:45:12", format: self.format)
+        XCTAssertEqual(customDate3?.monthAsString, "November")
     }
     
     func testWeekDay() {
@@ -224,5 +277,19 @@ class DateTests: XCTestCase {
     func testSecond() {
         let customDate = Date(fromString: "09-01-2015 05:45:12", format: self.format)
         XCTAssertEqual(customDate?.second, 12)
+    }
+    
+    func testNanoSecond() {
+        let customDateWithoutNanoSecondDefined =
+            Date(fromString: "09-01-2015 05:45:12", format: self.format)
+        XCTAssertEqual(customDateWithoutNanoSecondDefined?.nanosecond, 0)
+        
+        let today = Date()
+        XCTAssert(today.nanosecond == Calendar.current.component(.nanosecond, from: today))
+    }
+    
+    func testISO8601() {
+        let customDate = Date(fromString: "09-01-2015 05:45:12", format: self.format)
+        XCTAssertEqual(customDate?.iso8601, "2015-01-09T05:45:12Z")
     }
 }
