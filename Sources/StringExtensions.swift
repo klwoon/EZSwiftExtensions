@@ -6,11 +6,12 @@
 //  Copyright (c) 2015 Goktug Yilmaz. All rights reserved.
 //
 // swiftlint:disable line_length
-// swiftlint:disable trailing_whitespace
 
 #if os(OSX)
     import AppKit
-#else
+#endif
+
+#if os(iOS) || os(tvOS)
     import UIKit
 #endif
 
@@ -282,7 +283,7 @@ extension String {
     
     /// EZSE: Returns if String is a number
     public func isNumber() -> Bool {
-        if let _ = NumberFormatter().number(from: self) {
+        if NumberFormatter().number(from: self) != nil {
             return true
         }
         return false
@@ -301,8 +302,7 @@ extension String {
         let text = self
         
         if let detector = detector {
-            detector.enumerateMatches(in: text, options: [], range: NSRange(location: 0, length: text.characters.count), using: {
-                (result: NSTextCheckingResult?, flags: NSRegularExpression.MatchingFlags, stop: UnsafeMutablePointer<ObjCBool>) -> Void in
+            detector.enumerateMatches(in: text, options: [], range: NSRange(location: 0, length: text.characters.count), using: {(result: NSTextCheckingResult?, _, _) -> Void in
                 if let result = result, let url = result.url {
                     urls.append(url)
                 }
@@ -355,10 +355,8 @@ extension String {
     
     ///EZSE: Returns the first index of the occurency of the character in String
     public func getIndexOf(_ char: Character) -> Int? {
-        for (index, c) in characters.enumerated() {
-            if c == char {
-                return index
-            }
+        for (index, c) in characters.enumerated() where c == char {
+            return index
         }
         return nil
     }
@@ -395,18 +393,20 @@ extension String {
     #if os(iOS)
     
     ///EZSE: Returns hight of rendered string
-    func height(_ width: CGFloat, font: UIFont, lineBreakMode: NSLineBreakMode?) -> CGFloat {
+    public func height(_ width: CGFloat, font: UIFont, lineBreakMode: NSLineBreakMode?) -> CGFloat {
         var attrib: [String: AnyObject] = [NSFontAttributeName: font]
         if lineBreakMode != nil {
             let paragraphStyle = NSMutableParagraphStyle()
             paragraphStyle.lineBreakMode = lineBreakMode!
             attrib.updateValue(paragraphStyle, forKey: NSParagraphStyleAttributeName)
         }
-        let size = CGSize(width: width, height: CGFloat(DBL_MAX))
+        let size = CGSize(width: width, height: CGFloat(Double.greatestFiniteMagnitude))
         return ceil((self as NSString).boundingRect(with: size, options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes:attrib, context: nil).height)
     }
     
     #endif
+    
+    #if os(iOS) || os(tvOS)
     
     ///EZSE: Returns NSAttributedString
     public func color(_ color: UIColor) -> NSAttributedString {
@@ -433,6 +433,8 @@ extension String {
         }
         return attrText
     }
+    
+    #endif
     
     /// EZSE: Checks if String contains Emoji
     public func includesEmoji() -> Bool {
